@@ -17,6 +17,7 @@ import charms.reactive as reactive
 
 # This charm's library contains all of the handler code associated with
 # sdn_charm
+# TODO(Sunny) This doesn't resolve
 import charm.openstack.neutron_api_nuage as neutron_api_nuage  # noqa
 
 charm.use_defaults(
@@ -31,12 +32,14 @@ def render_config(*args):
         neutron_api_nuage_charm.render_with_interfaces(args)
         neutron_api_nuage_charm.assess_status()
 
+
 @reactive.when('neutron-plugin-api-subordinate.connected')
 def configure_plugin(api_principle):
     with charm.provide_charm_instance() as neutron_api_nuage_charm:
         neutron_api_nuage_charm.configure_plugin(api_principle)
         neutron_api_nuage_charm.assess_status()
     api_principle.request_restart()
+
 
 @reactive.when_file_changed(neutron_api_nuage.ML2_CONF)
 @reactive.when('neutron-plugin-api-subordinate.connected')

@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 import amulet
 import json
 import subprocess
@@ -26,13 +25,14 @@ import charmhelpers.contrib.openstack.amulet.utils as os_amulet_utils
 u = os_amulet_utils.OpenStackAmuletUtils(os_amulet_utils.DEBUG)
 
 
-class NeutronApiNuageCharmDeployment(amulet_deployment.OpenStackAmuletDeployment):
+class NeutronApiNuageCharmDeployment(
+        amulet_deployment.OpenStackAmuletDeployment):
     """Amulet tests on a basic neutron-api-nuage deployment."""
 
     def __init__(self, series, openstack=None, source=None, stable=False):
         """Deploy the entire test environment."""
         super(NeutronApiNuageCharmDeployment, self).__init__(series, openstack,
-                                                          source, stable)
+                                                             source, stable)
         self._add_services()
         self._add_relations()
         self._configure_services()
@@ -47,7 +47,8 @@ class NeutronApiNuageCharmDeployment(amulet_deployment.OpenStackAmuletDeployment
     def _add_services(self):
         """Add services
 
-           Add the services that we're testing, where neutron-api-nuage is local,
+           Add the services that we're testing,
+           where neutron-api-nuage is local,
            and the rest of the service are from lp branches that are
            compatible with the local charm (e.g. stable or next).
            """
@@ -69,8 +70,8 @@ class NeutronApiNuageCharmDeployment(amulet_deployment.OpenStackAmuletDeployment
             {'name': 'nova-cloud-controller'},
             {'name': 'glance'},
         ]
-        super(NeutronApiNuageCharmDeployment, self)._add_services(this_service,
-                                                      other_services)
+        super(NeutronApiNuageCharmDeployment, self)._add_services(
+            this_service, other_services)
 
     def _add_relations(self):
         """Add all of the relations for the services."""
@@ -107,7 +108,8 @@ class NeutronApiNuageCharmDeployment(amulet_deployment.OpenStackAmuletDeployment
         keystone_config = {'admin-password': 'openstack',
                            'admin-token': 'ubuntutesting'}
         configs = {'keystone': keystone_config}
-        super(NeutronApiNuageCharmDeployment, self)._configure_services(configs)
+        super(NeutronApiNuageCharmDeployment, self)._configure_services(
+            configs)
 
     def _get_token(self):
         return self.keystone.service_catalog.catalog['token']['id']
@@ -115,10 +117,12 @@ class NeutronApiNuageCharmDeployment(amulet_deployment.OpenStackAmuletDeployment
     def _initialize_tests(self):
         """Perform final initialization before tests get run."""
         # Access the sentries for inspecting service units
+        # TODO(Sunny) fix
         self.neutron-api-nuage_sentry = self.d.sentry['neutron-api-nuage'][0]
         self.mysql_sentry = self.d.sentry['mysql'][0]
         self.keystone_sentry = self.d.sentry['keystone'][0]
         self.rabbitmq_sentry = self.d.sentry['rabbitmq-server'][0]
+        # TODO(Sunny) fix
         self.neutron-api-nuage_svcs = [
             'neutron-api-nuage-agent', 'neutron-api-nuage-api']
 
@@ -171,6 +175,7 @@ class NeutronApiNuageCharmDeployment(amulet_deployment.OpenStackAmuletDeployment
         u.log.debug('Checking system services on units...')
 
         service_names = {
+            # TODO(Sunny) fix
             self.neutron-api-nuage_sentry: self.neutron-api-nuage_svcs,
         }
 

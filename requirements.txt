@@ -1,4 +1,6 @@
 # Requirements to build the charm
+
 charm-tools
+charmhelpers
 simplejson
 flake8
